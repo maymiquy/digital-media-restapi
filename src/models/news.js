@@ -1,7 +1,7 @@
 const db = require('../config/dbConnection')
 
 class News {
-    static getAllData() {
+    static all() {
         return new Promise((resolve, reject) => {
             db.query('SELECT * FROM news', (err, results) => {
                 if (err) {
@@ -13,7 +13,7 @@ class News {
         })
     }
 
-    static async createData(data) {
+    static async create(data) {
         const id = await new Promise((resolve, reject) => {
             db.query('INSERT INTO news SET ?', data, (err, results) => {
                 if (err) {
@@ -28,7 +28,7 @@ class News {
         return news
     }
 
-    static async updateDataById(id, data) {
+    static async update(id, data) {
         await new Promise((resolve, reject) => {
             db.query('UPDATE news SET ? WHERE id = ?', [data, id], (err, results) => {
                 if (err) {
@@ -43,7 +43,7 @@ class News {
         return news
     }
 
-    static async destroyDataById(id) {
+    static async delete(id) {
         return new Promise((resolve, reject) => {
             db.query('DELETE FROM news WHERE id = ?', id, (err, results) => {
                 if (err) {
@@ -55,7 +55,7 @@ class News {
         })
     }
 
-    static async getDataById(id) {
+    static async find(id) {
         return new Promise((resolve, reject) => {
             db.query('SELECT * FROM news WHERE id = ?', id, (err, results) => {
                 const [news] = results

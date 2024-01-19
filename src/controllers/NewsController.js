@@ -1,8 +1,8 @@
-const News = require('../models/news');
+const News = require('../models/news')
 
 class NewsController {
     index = async (req, res) => {
-        const news = await News.getAllData()
+        const news = await News.all()
 
         if (news.length > 0) {
             const response = {
@@ -20,7 +20,7 @@ class NewsController {
 
     store = async (req, res) => {
         const { title, author, content, url, url_image, published_at, category } = req.body
-        const news = await News.createData(req.body)
+        const news = await News.create(req.body)
 
         if (!title || !author || !content || !url || !url_image || !published_at || !category) {
             const response = {
@@ -40,7 +40,7 @@ class NewsController {
 
     show = async (req, res) => {
         const { id } = req.params
-        const news = await News.getDataById(id)
+        const news = await News.find(id)
 
         if (news) {
             const response = {
@@ -60,10 +60,10 @@ class NewsController {
 
     update = async (req, res) => {
         const { id } = req.params
-        const news = await News.getDataById(id)
+        const news = await News.find(id)
 
         if (news) {
-            const newsUpdated = await News.updateDataById(id, req.body)
+            const newsUpdated = await News.update(id, req.body)
 
             const response = {
                 message: 'Berhasil mengupdate berita',
@@ -82,7 +82,7 @@ class NewsController {
 
     destroy = async (req, res) => {
         const { id } = req.params
-        const news = await News.getDataById(id)
+        const news = await News.find(id)
 
         if (news) {
             await News.destroyDataById(id)
