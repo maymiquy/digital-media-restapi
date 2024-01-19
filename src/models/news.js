@@ -1,4 +1,3 @@
-const { Op } = require('sequelize')
 const db = require('../config/dbConnection')
 
 class News {
@@ -70,21 +69,14 @@ class News {
         })
     }
 
-    static async searchByTitle(title) {
+    static async search(title) {
         return new Promise((resolve, reject) => {
-            const query = `
-            SELECT * FROM news
-            WHERE title LIKE '%${title}%'
-          `;
-
-            db.query(query, (error, results) => {
-                const [news] = results
+            db.query(`SELECT * FROM news WHERE title LIKE '%${title}%'`, (error, results) => {
 
                 if (error) {
-                    console.error('Error searching for data:', error);
-                    return reject('Internal server error');
+                    reject({ message: 'Not found', status: 404 });
                 } else {
-                    return resolve(news);
+                    resolve({ message: "Results found", data: results, status: 200 });
                 }
             });
         });

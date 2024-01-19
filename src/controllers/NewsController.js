@@ -1,5 +1,4 @@
-const { response } = require('express');
-const News = require('../models/News');
+const News = require('../models/news');
 
 class NewsController {
     index = async (req, res) => {
@@ -103,23 +102,15 @@ class NewsController {
     }
 
     search = async (req, res) => {
-        const { title } = req.query;
-
         try {
-            const news = await News.searchByTitle(title);
-
-            if (news) {
-                const response = {
-                    message: 'Berhasil menemukan berita',
-                    data: news
-                };
-                return res.status(200).json(response);
+            const news = await News.search(req.params.title);
+            if (news && news.data.length > 0) {
+                res.status(200).json({ message: 'Result found', data: news });
             } else {
-                return res.status(404).json({ message: 'Berita tidak ditemukan' });
+                res.status(404).json({ message: 'Not found' });
             }
         } catch (error) {
-            console.error('Error searching for data:', error);
-            return res.status(500).json({ error: 'Internal server error' });
+            res.status(404).json(error);
         }
     }
 
