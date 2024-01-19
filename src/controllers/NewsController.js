@@ -105,7 +105,11 @@ class NewsController {
         try {
             const news = await News.search(req.params.title);
             if (news && news.data.length > 0) {
-                res.status(200).json({ message: 'Result found', data: news });
+                res.status(200).json({
+                    message: 'Result found',
+                    data: news,
+                    total: news.data.length
+                });
             } else {
                 res.status(404).json({ message: 'Not found' });
             }
@@ -122,11 +126,14 @@ class NewsController {
 
         const response = {
             message: "Berhasilkan menemukan berita category sport",
-            data: results
+            data: results,
+            total: results.length
         }
 
-        if (results) {
+        if (results && results.length > 0) {
             return res.status(200).json(response);
+        } else {
+            return res.status(404).json({ message: 'Berita kategori sport belum tersedia' });
         }
     }
 
@@ -138,11 +145,14 @@ class NewsController {
 
         const response = {
             message: "Berhasilkan menemukan berita category finance",
-            data: results
+            data: results,
+            total: results.length
         }
 
-        if (results) {
+        if (results && results.length > 0) {
             return res.status(200).json(response);
+        } else {
+            return res.status(404).json({ message: 'Berita kategori finance belum tersedia' });
         }
     }
 
@@ -154,11 +164,14 @@ class NewsController {
 
         const response = {
             message: "Berhasilkan menemukan berita category automotive",
-            data: results
+            data: results,
+            total: results.length
         }
 
-        if (results) {
+        if (results && results.length > 0) {
             return res.status(200).json(response);
+        } else {
+            return res.status(404).json({ message: 'Berita kategori automotive belum tersedia' });
         }
     }
 }
